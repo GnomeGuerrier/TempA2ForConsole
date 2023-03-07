@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 //test
 
-namespace Programme1
+namespace ConsoleProgram
 {
     class Program
     {

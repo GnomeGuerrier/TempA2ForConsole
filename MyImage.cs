@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
-namespace Programme1
+namespace ConsoleProgram
 {
     class MyImage
+
     {
         string basicPath = "C:/Users/eliot/OneDrive/Documents/Cours ESILV/A2/S4/Algo/ConsoleProgram/bin/Debug/images/";
         private byte[] myfile;
