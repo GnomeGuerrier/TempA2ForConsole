@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 
 
-//test
+
 
 namespace ConsoleProgram
 {
@@ -20,11 +20,12 @@ namespace ConsoleProgram
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Valider la compatibilité de la plateforme", Justification = "<En attente>")]
         static void Main(string[] args)
         {
-            string basicPath = "C:/Users/eliot/OneDrive/Documents/Cours ESILV/A2/S4/Algo/ConsoleProgram/bin/Debug/images/";
-            MyImage image = new MyImage(basicPath + "lac.bmp");
+            string basicPath = "./images/";
+            MyImage image = new MyImage(basicPath + "coco.bmp");
             //image.From_Image_To_File("cocosortie");
             // image.ImageEnGris();
-            image.Agrandissement(20);
+            //image.Agrandissement(20);
+            image.Rotation(90);
             Console.ReadLine();
 
 

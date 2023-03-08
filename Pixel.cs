@@ -59,5 +59,9 @@ namespace ConsoleProgram
             string retu = this.r + " " + this.g + " " + this.b;
             return retu;
         }
+        public Pixel GetPixels() { 
+            Pixel result = new Pixel(this.GetR, this.GetG, this.GetB);
+            return result;
+        }
     }
 }

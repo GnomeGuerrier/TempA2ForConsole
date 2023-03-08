@@ -12,7 +12,7 @@ namespace ConsoleProgram
     class MyImage
 
     {
-        string basicPath = "C:/Users/eliot/OneDrive/Documents/Cours ESILV/A2/S4/Algo/ConsoleProgram/bin/Debug/images/";
+        string basicPath = "./images/";
         private byte[] myfile;
         private string name;
         private string type;
@@ -310,6 +310,63 @@ namespace ConsoleProgram
 
                 imAgrandissement.From_Image_To_File(this.name + "_Resize_" + (1 - zoom));
             }
+        }
+        public Pixel ReturnPixel(int x, int y)
+        {
+            Pixel ret = image[x,y].GetPixels();
+            return ret;
+        }
+        public void PlacePixel(int x, int y, Pixel pixel)
+        {
+            this.image[x,y] = pixel;
+        }
+
+        public void Rotation(double angles)
+        {
+            int angle = Convert.ToInt32(angles);
+            Console.WriteLine("Begin Rotation");
+            double radians = angle * Math.PI / 180.0;
+            double sin = Math.Sin(radians);
+            double cos = Math.Cos(radians);
+            MyImage result = new MyImage(basicPath + this.name + ".bmp");
+
+            int newL= this.largeur*(int)Math.Abs(cos)+this.hauteur*(int)Math.Abs(sin);
+            int newH = this.hauteur * (int)Math.Abs(cos) + this.largeur * (int)Math.Abs(sin);
+
+            result.tailleFichier = (54 + newH * newL * 3);
+            // Find the center of the image
+            int centerX = this.largeur / 2;
+            int centerY = this.hauteur / 2;
+
+            // Loop through each pixel in the image
+            for (int y = 0; y < this.hauteur; y++)
+            {
+                for (int x = 0; x < this.largeur; x++)
+                {
+                    // Translate the pixel so that the center of the image is the origin
+                    int transX = x - centerX;
+                    int transY = y - centerY;
+
+                    // Apply the rotation transformation
+                    int rotatedX = (int)(transX * cos - transY * sin);
+                    int rotatedY = (int)(transX * sin + transY * cos);
+
+                    // Translate the pixel back to its original position
+                    int finalX = rotatedX + centerX;
+                    int finalY = rotatedY + centerY;
+
+                    // Check that the final position is within the bounds of the image
+                    if (finalX >= 0 && finalX < newL && finalY >= 0 && finalY < newH)
+                    {
+                        // Get the color of the original pixel and set it at the final position
+                        Pixel originalPixel = this.ReturnPixel(x, y);
+                        this.PlacePixel(finalX, finalY, originalPixel);
+                    }
+                }
+            }
+            Console.WriteLine("Begin Save");
+            result.From_Image_To_File(this.name + "_Resize_" + angle);
+            Console.WriteLine("done");
         }
     }
 }
