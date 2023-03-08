@@ -334,39 +334,196 @@ namespace ConsoleProgram
             int newH = this.hauteur * (int)Math.Abs(cos) + this.largeur * (int)Math.Abs(sin);
 
             result.tailleFichier = (54 + newH * newL * 3);
-            // Find the center of the image
+            result.hauteur = newH;
+            result.largeur = newL;
             int centerX = this.largeur / 2;
             int centerY = this.hauteur / 2;
-
-            // Loop through each pixel in the image
+            Console.WriteLine("new hauteur" + newH);
+            Console.WriteLine("new largeur" + newL);
+            Console.WriteLine("hauteur classique" + this.hauteur);
+            Console.WriteLine("largeur classique" + this.largeur);
             for (int y = 0; y < this.hauteur; y++)
             {
                 for (int x = 0; x < this.largeur; x++)
                 {
-                    // Translate the pixel so that the center of the image is the origin
+                    
                     int transX = x - centerX;
                     int transY = y - centerY;
 
-                    // Apply the rotation transformation
-                    int rotatedX = (int)(transX * cos - transY * sin);
-                    int rotatedY = (int)(transX * sin + transY * cos);
+                    double rotatedX = (transX * cos - transY * sin);
+                    double rotatedY = (transX * sin + transY * cos);
 
-                    // Translate the pixel back to its original position
-                    int finalX = rotatedX + centerX;
-                    int finalY = rotatedY + centerY;
+                    int finalX = (int)Math.Abs(rotatedX + centerX);
+                    int finalY = (int)Math.Abs(rotatedY + centerY);
 
-                    // Check that the final position is within the bounds of the image
+                    
                     if (finalX >= 0 && finalX < newL && finalY >= 0 && finalY < newH)
                     {
-                        // Get the color of the original pixel and set it at the final position
+                        Console.WriteLine("-----");
+                        Console.WriteLine("x=" + x);
+                        Console.WriteLine("y=" + y);
+                        Console.WriteLine("finalx" + finalX);
+                        Console.WriteLine("finaly" + finalY);
+                        
+                        
                         Pixel originalPixel = this.ReturnPixel(x, y);
-                        this.PlacePixel(finalX, finalY, originalPixel);
+                        result.PlacePixel(finalX, finalY, originalPixel);
                     }
+                    
                 }
             }
             Console.WriteLine("Begin Save");
-            result.From_Image_To_File(this.name + "_Resize_" + angle);
+            result.From_Image_To_File(this.name + "_Rotation_" + angle);
             Console.WriteLine("done");
         }
+
+        public void Emboss()
+        {
+           
+            Pixel[,] inputImage = this.image;
+            int width = inputImage.GetLength(0);
+            int height = inputImage.GetLength(1);
+            Pixel[,] outputImage = new Pixel[width, height];
+
+            int[,] embossKernel = new int[,] { { -1,-1,0 }, {-1,0,1}, { 0, 1, 1 } };
+
+            for (int x = 1; x < width - 1; x++)
+            {
+                for (int y = 1; y < height - 1; y++)
+                {
+                    int rSum = 0, gSum = 0, bSum = 0;
+
+                    for (int i = -1; i <= 1; i++)
+                    {
+                        for (int j = -1; j <= 1; j++)
+                        {
+                            int offsetX = x + i;
+                            int offsetY = y + j;
+                            int kernelX = i + 1;
+                            int kernelY = j + 1;
+
+                            rSum += inputImage[offsetX, offsetY].GetR * embossKernel[kernelX, kernelY];
+                            gSum += inputImage[offsetX, offsetY].GetG * embossKernel[kernelX, kernelY];
+                            bSum += inputImage[offsetX, offsetY].GetB * embossKernel[kernelX, kernelY];
+                        }
+                    }
+
+                    int r = rSum + 128;
+                    int g = gSum + 128;
+                    int b = bSum + 128;
+                    r = Math.Min(Math.Max(r, 0), 255);
+                    g = Math.Min(Math.Max(g, 0), 255);
+                    b = Math.Min(Math.Max(b, 0), 255);
+
+                    //Console.WriteLine(new Pixel((byte)r, (byte)g, (byte)b).toString());
+
+                    this.image[x, y] = new Pixel((byte)r, (byte)g, (byte)b);
+                    //Console.WriteLine(outputImage[x,y].toString());
+                }
+            }
+            
+            //this.image = outputImage;
+            /*for(int x = 0; x < outputImage.GetLength(1); x++)
+            {
+                for(int y = 0; y < outputImage.GetLength(1); y++)
+                {
+                    this.image[x,y] = outputImage[x, y];
+                }
+            }*/
+            //
+            this.From_Image_To_File(this.name + "_emboss");
+            
+        }
+        public void Flou()
+        {
+            Console.WriteLine("begin");
+            Pixel[,] inputImage = this.image;
+            int width = inputImage.GetLength(0);
+            int height = inputImage.GetLength(1);
+            Pixel[,] outputImage = new Pixel[width, height];
+
+            double[,] embossKernel = new double[,] { { 1/9, 1/9, 1/9 }, { 1 / 9, 1 / 9, 1 / 9 }, { 1 / 9, 1 / 9, 1 / 9 } };
+
+            for (int x = 1; x < width - 1; x++)
+            {
+                for (int y = 1; y < height - 1; y++)
+                {
+                    int rSum = 0, gSum = 0, bSum = 0;
+
+                    for (int i = -1; i <= 1; i++)
+                    {
+                        for (int j = -1; j <= 1; j++)
+                        {
+                            int offsetX = x + i;
+                            int offsetY = y + j;
+                            int kernelX = i + 1;
+                            int kernelY = j + 1;
+
+                            rSum += inputImage[offsetX, offsetY].GetR *(int) embossKernel[kernelX, kernelY];
+                            gSum += inputImage[offsetX, offsetY].GetG * (int)embossKernel[kernelX, kernelY];
+                            bSum += inputImage[offsetX, offsetY].GetB * (int)embossKernel[kernelX, kernelY];
+                        }
+                    }
+
+                    
+                    //Console.WriteLine(new Pixel((byte)r, (byte)g, (byte)b).toString());
+
+                    this.image[x, y] = new Pixel((byte)rSum, (byte)gSum, (byte)bSum);
+                    //Console.WriteLine(outputImage[x,y].toString());
+                }
+            }
+
+            //this.image = outputImage;
+            /*for(int x = 0; x < outputImage.GetLength(1); x++)
+            {
+                for(int y = 0; y < outputImage.GetLength(1); y++)
+                {
+                    this.image[x,y] = outputImage[x, y];
+                }
+            }*/
+            //
+            Console.WriteLine("begin save");
+            this.From_Image_To_File(this.name + "_Flou");
+            Console.WriteLine("begin done");
+        }
+
+
+        public void Embossing(double[,] filtre)
+        {
+            //Création matrice output de pixel de même dimensions que celle en input
+            Pixel[,] floute = new Pixel[this.hauteur, this.largeur];
+            MyImage resu = this;
+            for (int i = 0; i < this.hauteur; i++)
+            {
+                for (int j = 0; j < this.largeur; j++)
+                {
+                    double SR = 0;
+                    double SG = 0;
+                    double SB = 0;
+                    for (int k = -1; k <= 1; k++)
+                     {
+
+                        for (int l = -1; l <= 1; l++)
+                        {
+                            int pixelX = j + l;
+                            int pixelY = i + k;
+
+                            if (pixelX >= 0 && pixelX < this.largeur && pixelY >= 0 && pixelY < this.hauteur)
+                            {
+                                SR += this.image[pixelY, pixelX].GetR * filtre[k + 1, l + 1];
+                                SG += this.image[pixelY, pixelX].GetG * filtre[k + 1, l + 1];
+                                SB += this.image[pixelY, pixelX].GetB * filtre[k + 1, l + 1];
+
+                            }
+                        }
+                    }
+                    this.image[i, j] = new Pixel( (byte)(SB), (byte)(SG), (byte)(SR));
+                }
+            }
+            Console.WriteLine("begin save");
+            this.From_Image_To_File(this.name + "_Flou2");
+            Console.WriteLine("begin done");
+        }
+
     }
 }

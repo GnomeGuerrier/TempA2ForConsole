@@ -21,11 +21,15 @@ namespace ConsoleProgram
         static void Main(string[] args)
         {
             string basicPath = "./images/";
-            MyImage image = new MyImage(basicPath + "coco.bmp");
+            MyImage image = new MyImage(basicPath + "lena.bmp");
             //image.From_Image_To_File("cocosortie");
             // image.ImageEnGris();
             //image.Agrandissement(20);
-            image.Rotation(90);
+            //image.Rotation(90);
+            //image.Emboss();
+            // image.Flou();
+            double[,] embossKernel = new double[,] { { 1 / 9, 1 / 9, 1 / 9 }, { 1 / 9, 1 / 9, 1 / 9 }, { 1 / 9, 1 / 9, 1 / 9 } };
+            image.Embossing(embossKernel);
             Console.ReadLine();
 
 
