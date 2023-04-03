@@ -105,7 +105,7 @@ namespace ConsoleProgram
                 Console.WriteLine(a.toString());
             }
         }
-        public byte[] Getmyfile
+        public byte[] GetFile
         {
             get { return this.myfile; }
             set { this.myfile = value; }
@@ -131,7 +131,7 @@ namespace ConsoleProgram
             byte[] result = new byte[arraylength];
             for (int i = 0; i < arraylength; i++)
             {
-                result[i] = (byte)(((uint)number >> i * 8) & 0xFF);   //Shift right i*8 bits and add a 0 if necessary
+                result[i] = (byte)(((uint)number >> i * 8) & 0xFF);   
             }
             return result;
         }
@@ -210,7 +210,7 @@ namespace ConsoleProgram
         }
         */
 
-
+        #region Agrandissement
         public void Agrandissement(double zoom)
         {
 
@@ -311,10 +311,18 @@ namespace ConsoleProgram
                 imAgrandissement.From_Image_To_File(this.name + "_Resize_" + (1 - zoom));
             }
         }
+        #endregion
         public Pixel ReturnPixel(int x, int y)
         {
-            Pixel ret = image[x,y].GetPixels();
-            return ret;
+            Pixel black = new Pixel(0,0,0);
+            if (this.hauteur<=x || this.largeur<=y)return black;
+            else{
+                Pixel ret = image[x,y].GetPixels();
+                return ret;
+            }
+            
+            
+            
         }
         public void PlacePixel(int x, int y, Pixel pixel)
         {
@@ -330,8 +338,8 @@ namespace ConsoleProgram
             double cos = Math.Cos(radians);
             MyImage result = new MyImage(basicPath + this.name + ".bmp");
 
-            int newL= this.largeur*(int)Math.Abs(cos)+this.hauteur*(int)Math.Abs(sin);
-            int newH = this.hauteur * (int)Math.Abs(cos) + this.largeur * (int)Math.Abs(sin);
+            int newL=(int) (this.largeur*Math.Abs(cos)+this.hauteur*Math.Abs(sin));
+            int newH = (int)(this.hauteur * Math.Abs(cos) + this.largeur * Math.Abs(sin));
 
             result.tailleFichier = (54 + newH * newL * 3);
             result.hauteur = newH;
@@ -377,15 +385,15 @@ namespace ConsoleProgram
             Console.WriteLine("done");
         }
 
-        public void Emboss()
+        public void Emboss(int[,] embossKernel)
         {
-           
+           System.Console.WriteLine("Start Emboss");
             Pixel[,] inputImage = this.image;
             int width = inputImage.GetLength(0);
             int height = inputImage.GetLength(1);
             Pixel[,] outputImage = new Pixel[width, height];
 
-            int[,] embossKernel = new int[,] { { -1,-1,0 }, {-1,0,1}, { 0, 1, 1 } };
+            
 
             for (int x = 1; x < width - 1; x++)
             {
@@ -431,8 +439,9 @@ namespace ConsoleProgram
                 }
             }*/
             //
-            this.From_Image_To_File(this.name + "_emboss");
-            
+            System.Console.WriteLine("start Save");
+            this.From_Image_To_File(this.name + "_embossGPT");
+            System.Console.WriteLine("Done Save");
         }
         public void Flou()
         {
@@ -486,44 +495,5 @@ namespace ConsoleProgram
             this.From_Image_To_File(this.name + "_Flou");
             Console.WriteLine("begin done");
         }
-
-
-        public void Embossing(double[,] filtre)
-        {
-            //Création matrice output de pixel de même dimensions que celle en input
-            Pixel[,] floute = new Pixel[this.hauteur, this.largeur];
-            MyImage resu = this;
-            for (int i = 0; i < this.hauteur; i++)
-            {
-                for (int j = 0; j < this.largeur; j++)
-                {
-                    double SR = 0;
-                    double SG = 0;
-                    double SB = 0;
-                    for (int k = -1; k <= 1; k++)
-                     {
-
-                        for (int l = -1; l <= 1; l++)
-                        {
-                            int pixelX = j + l;
-                            int pixelY = i + k;
-
-                            if (pixelX >= 0 && pixelX < this.largeur && pixelY >= 0 && pixelY < this.hauteur)
-                            {
-                                SR += this.image[pixelY, pixelX].GetR * filtre[k + 1, l + 1];
-                                SG += this.image[pixelY, pixelX].GetG * filtre[k + 1, l + 1];
-                                SB += this.image[pixelY, pixelX].GetB * filtre[k + 1, l + 1];
-
-                            }
-                        }
-                    }
-                    this.image[i, j] = new Pixel( (byte)(SB), (byte)(SG), (byte)(SR));
-                }
-            }
-            Console.WriteLine("begin save");
-            this.From_Image_To_File(this.name + "_Flou2");
-            Console.WriteLine("begin done");
-        }
-
     }
 }
