@@ -21,11 +21,14 @@ namespace ConsoleProgram
         static void Main(string[] args)
         {
             string basicPath = "./images/";
-            MyImage image = new MyImage(basicPath + "coco.bmp");
+            MyImage imageBase = new MyImage(basicPath + "TestHugo1.bmp");
+            MyImage imageCode = new MyImage(basicPath + "TestHugo2.bmp");
+            Steganography stega = new Steganography(image);
+            stega.Encode(imageCode);
             //image.From_Image_To_File("cocosortie");
             // image.ImageEnGris();
             //image.Agrandissement(20);
-            image.Rotation(45);
+            //image.Rotation(45);
             //image.Emboss();
             // image.Flou();
             //int[,] embossKernel = new int[,] { { -1, -1, 0 }, { -1, 0, 1 }, { 0, 1, 1 } };
