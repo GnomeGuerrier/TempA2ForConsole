@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ConsoleProgram
 {
-    class Pixel
+   public class Pixel
     {
-        private byte r;
-        private byte g;
-        private byte b;
+        public byte r;
+        public byte g;
+        public byte b;
 
 
         public Pixel(byte red, byte green, byte blue)
@@ -18,6 +18,11 @@ namespace ConsoleProgram
             this.r = red;
             this.g = green;
             this.b = blue;
+        }
+        public Pixel(int[]color){
+            this.r=(byte)color[2];
+            this.g=(byte)color[1];
+            this.b=(byte)color[0];
         }
         public byte[] toByteArray()
         {
