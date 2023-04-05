@@ -19,6 +19,7 @@ namespace ConsoleProgram
             this.g = green;
             this.b = blue;
         }
+        public Pixel(){}
         public Pixel(int[]color){
             this.r=(byte)color[2];
             this.g=(byte)color[1];

@@ -534,51 +534,6 @@ namespace ConsoleProgram
             this.From_Image_To_File(this.name + "_Flou2");
             Console.WriteLine("begin done");
         }
-         public void MandelBrot()
-        {
-            
-            //Creation of the image
-            MyImage Fractal = new MyImage();
-            Fractal.name = "Mandelbrot";
-            Fractal.type = "BM";
-            Fractal.largeur = 1000;
-            Fractal.hauteur = 1000;
-            Fractal.offset = 54;
-            Fractal.tailleFichier = Fractal.largeur * Fractal.hauteur * 3 + Fractal.offset;
-            Fractal.bpc= 24;
-            Fractal.hres = 0;
-            Fractal.vres = 0;
-            Fractal.image = new Pixel[Fractal.hauteur, Fractal.largeur];
-            int[][] Couleurs = new int[3][] { new int[] { 0, 0, 0 }, new int[] { 232, 26, 46 }, new int[] { 255, 255, 255 } };
-            //The Mandelbrot set is the set of complex numbers c
-            Complexe c = new Complexe();
-            int count = 0;
-            for (int i = 0; i < Fractal.largeur; i++) // real part of the complex number is represented by a displacement along the x-axis
-            {
-                c.Re = (double)(i - Fractal.largeur / 2) / (0.25 * Fractal.largeur);
-                for (int j = 0; j < Fractal.hauteur; j++) //imaginary part of the complex number is represented by a displacement along the y-axis
-                {
-                    Complexe z = new Complexe(0, 0);
-                    c.Im = (double)(j - Fractal.hauteur / 2) / (0.25 * Fractal.hauteur);
-                    
-                    do
-                    {
-                        z = Complexe.ComplexMult(z, z);
-                        z = Complexe.ComplexAdd(z, c);
-                        count++;
-                        if (z.Module() > 2) break; //The sequence zn is not bounded if the modulus of one of its terms is greater than 2
-                    }
-                    while (count < 255);
-                    //The number of iterations to reach a modulus greater than 2 is used to determine the color to use
-
-                    int[] colour = new int[] { 0, 0, 0 };
-                    if (count != 254) { colour = new int[] { count * 255 / 50, 0, 0 }; }
-                    Fractal.image[j, i] = new Pixel(colour);
-                    count = 0;
-                }
-            }
-            Fractal.From_Image_To_File("MandelBrot");
-        }
 
     }
 }

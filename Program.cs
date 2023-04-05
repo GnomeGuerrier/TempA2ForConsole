@@ -30,8 +30,10 @@ namespace ConsoleProgram
             // image.Flou();
             //double[,] embossKernel = new double[,] { { 1 / 9, 1 / 9, 1 / 9 }, { 1 / 9, 1 / 9, 1 / 9 }, { 1 / 9, 1 / 9, 1 / 9 } };
             //image.Embossing(embossKernel);
-            Rotate rotate = new Rotate(45,image);
-            rotate.From_Image_To_File("Test_Rotation");
+            //Rotate rotate = new Rotate(45,image);
+            //rotate.From_Image_To_File("Test_Rotation");
+            Convolution convo = new Convolution(image,"Emboss");
+            convo.From_Image_To_File("Emboss");
             Console.ReadLine();
 
           
