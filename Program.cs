@@ -34,6 +34,7 @@ namespace ConsoleProgram
             //rotate.From_Image_To_File("Test_Rotation");
             //Convolution convo = new Convolution(image,"Emboss");
             //convo.From_Image_To_File("Emboss");
+            image.MandelBrot();
             MyImage imageBase = new MyImage(basicPath+"TestHugo1.bmp");
             MyImage imageCode = new MyImage(basicPath+"TestHugo2.bmp");
             Steganography stega = new Steganography(imageBase);
