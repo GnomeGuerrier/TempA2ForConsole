@@ -34,6 +34,14 @@ namespace ConsoleProgram
 
             return array;
         }
+        public byte[] toIntArray(){
+            byte[] ret = new byte[3];
+            ret[0]=this.GetR;
+            ret[1]=this.GetB;
+            ret[2]=this.GetG;
+            return ret;
+
+        }
         public static bool IsEqual(Pixel a, Pixel b)
         {
             if (a.GetR == b.GetR && a.GetG == b.GetG && a.GetB == b.GetB)

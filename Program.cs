@@ -20,7 +20,7 @@ namespace ConsoleProgram
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Valider la compatibilité de la plateforme", Justification = "<En attente>")]
         static void Main(string[] args)
         {
-            string basicPath = "./images/";
+            string basicPath = "./bin/Debug/net7.0/images/";
             MyImage image = new MyImage(basicPath + "coco.bmp");
             //image.From_Image_To_File("cocosortie");
             // image.ImageEnGris();
@@ -32,8 +32,13 @@ namespace ConsoleProgram
             //image.Embossing(embossKernel);
             //Rotate rotate = new Rotate(45,image);
             //rotate.From_Image_To_File("Test_Rotation");
-            Convolution convo = new Convolution(image,"Emboss");
-            convo.From_Image_To_File("Emboss");
+            //Convolution convo = new Convolution(image,"Emboss");
+            //convo.From_Image_To_File("Emboss");
+            MyImage imageBase = new MyImage(basicPath+"TestHugo1.bmp");
+            MyImage imageCode = new MyImage(basicPath+"TestHugo2.bmp");
+            Steganography stega = new Steganography(imageBase);
+            stega.Encode(imageCode,4);
+            stega.Decode();
             Console.ReadLine();
 
           

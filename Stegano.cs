@@ -15,10 +15,10 @@ namespace ConsoleProgram
         // CONSTRUCTOR
         //==================================================================================================================================================================================================================================================
 
-        #region Constructor
+      
 
         public MyImage im;   //Original image (used as based image for encoding, and trying to decrypt
-
+        public MyImage encodedim;
         /// <summary>
         /// basic constructor, this takes the original image, to decode it, or encode another image inside it
         /// </summary>
@@ -37,19 +37,56 @@ namespace ConsoleProgram
 
         }
 
-        #endregion
+        
 
         //==================================================================================================================================================================================================================================================
         // FUNCTIONS
         //==================================================================================================================================================================================================================================================
 
-        #region Functions
+       
 
         /// <summary>
         /// Encode an image inside our image
         /// </summary>
         /// <param name="hiddenim">the image to be hidden</param>
         /// <param name="hiddenbits">the numbers of significant bit to be used</param>
+       
+       
+        public void Encode(MyImage hiddenim, int hiddenbits)
+        {
+             encodedim = this.im;
+            for (int x = 0; x < this.im.image.GetLength(0); x++)
+            {
+            for (int y = 0; y < this.im.image.GetLength(1); y++)
+            {
+                if (hiddenim.image.GetLength(0) > x && hiddenim.image.GetLength(1) > y)
+                {
+                    string RedBin = ToBin(this.im.image[x, y].GetR, this.bpc / 3);
+                    string GreenBin = ToBin(this.im.image[x, y].GetG, this.bpc / 3);
+                    string BlueBin = ToBin(this.im.image[x, y].GetB, this.bpc / 3);
+
+                    string HiddenRedBin = ToBin(hiddenim.image[x, y].GetR, this.bpc / 3);
+                    string HiddenGreenBin = ToBin(hiddenim.image[x, y].GetG, this.bpc / 3);
+                    string HiddenBlueBin = ToBin(hiddenim.image[x, y].GetB, this.bpc / 3);
+
+                    string NewRed = RedBin.Substring(0, this.bpc / 3 - hiddenbits) + HiddenRedBin.Substring(this.bpc / 3 - hiddenbits);
+                    string NewGreen = GreenBin.Substring(0, this.bpc / 3 - hiddenbits) + HiddenGreenBin.Substring(this.bpc / 3 - hiddenbits);
+                    string NewBlue = BlueBin.Substring(0, this.bpc / 3 - hiddenbits) + HiddenBlueBin.Substring(this.bpc / 3 - hiddenbits);
+
+                    encodedim.image[x, y].GetR = (byte)Convert.ToInt32(NewRed, 2);
+                    encodedim.image[x, y].GetG = (byte)Convert.ToInt32(NewGreen, 2);
+                    encodedim.image[x, y].GetB = (byte)Convert.ToInt32(NewBlue, 2);
+                }
+            }
+            }
+            //AdjustBrightnessAndContrast(encodedim,50,1.2);
+            encodedim.From_Image_To_File("TestHugoFinal");
+        }
+
+       
+       
+       
+       /*
         public void Encode(MyImage hiddenim, int hiddenbits)   //Change 8 to bpc/3?
         {
 
@@ -77,17 +114,17 @@ namespace ConsoleProgram
                         //Hidden bit with digit-(8-hiddenbits) so for example if hiddenbits is 4, when we get to digit=4 we access the 4-(8-4)=0th bit of the hidden image
                         for (int digit = 0; digit < this.bpc / 3; digit++)
                         {
-                            NewRed += digit > hiddenbits - 1 ? HiddenRedBin[digit - (this.bpc / 3 - hiddenbits)] : RedBin[digit];
+                            NewRed += digit < hiddenbits - 1 ? HiddenRedBin[digit - (this.bpc / 3 - hiddenbits)] : RedBin[digit];
                         }
                         for (int digit = 0; digit < this.bpc / 3; digit++)
                         {
-                            NewGreen += digit > hiddenbits - 1 ? HiddenGreenBin[digit - (this.bpc / 3 - hiddenbits)] : GreenBin[digit];
+                            NewGreen += digit < hiddenbits - 1 ? HiddenGreenBin[digit - (this.bpc / 3 - hiddenbits)] : GreenBin[digit];
                         }
                         for (int digit = 0; digit < this.bpc / 3; digit++)
                         {
-                            NewBlue += digit > hiddenbits - 1 ? HiddenBlueBin[digit - (this.bpc / 3 - hiddenbits)] : BlueBin[digit];
+                            NewBlue += digit < hiddenbits - 1 ? HiddenBlueBin[digit - (this.bpc / 3 - hiddenbits)] : BlueBin[digit];
                         }
-
+                    
 
 
                         encodedim.image[x, y].GetR = (byte)Convert.ToInt32(Convert.ToString(Convert.ToInt32(NewRed, 2), 10));
@@ -95,16 +132,39 @@ namespace ConsoleProgram
                         encodedim.image[x, y].GetB =(byte) Convert.ToInt32(Convert.ToString(Convert.ToInt32(NewBlue, 2), 10));
 
                     }
-                    /*else //If hiddenim is smaller than actual im, we don't alter the pixel
+                    else //If hiddenim is smaller than actual im, we don't alter the pixel
                     {
-                        encodedim.myfile[x, y] = new Pixel(im.image[x, y]);
-                    }*/
+                        encodedim.image[x, y] = im.image[x, y];
+                    }
 
 
                 }
             }
             encodedim.From_Image_To_File("TestHugoFinal");
+        }*/
+            
+
+        
+
+
+        public static void AdjustBrightnessAndContrast(MyImage image, double brightnessScale, double contrastScale)
+        {
+            for (int x = 0; x < image.image.GetLength(0); x++)
+            {
+            for (int y = 0; y < image.image.GetLength(1); y++)
+                {
+            int newR = (int)Math.Round((image.image[x, y].GetR - 128) * contrastScale + 128 + brightnessScale);
+            int newG = (int)Math.Round((image.image[x, y].GetG - 128) * contrastScale + 128 + brightnessScale);
+            int newB = (int)Math.Round((image.image[x, y].GetB - 128) * contrastScale + 128 + brightnessScale);
+
+            image.image[x, y].GetR = (byte)Math.Min(Math.Max(newR, 0), 255);
+            image.image[x, y].GetG = (byte)Math.Min(Math.Max(newG, 0), 255);
+            image.image[x, y].GetB = (byte)Math.Min(Math.Max(newB, 0), 255);
+                }
+            }
         }
+
+
 
         public static string ToBin(int value, int len)
         {
@@ -169,6 +229,16 @@ namespace ConsoleProgram
                             NewBlue += "0";
                         }
 
+                       if (RedBin != "00000000" || GreenBin != "00000000" || BlueBin != "00000000")
+{
+    Console.WriteLine("Pixel (" + x + "," + y + ")");
+    Console.WriteLine("Original R: " + RedBin + ", G: " + GreenBin + ", B: " + BlueBin);
+    Console.WriteLine("Encoded R: " + NewRed + ", G: " + NewGreen + ", B: " + NewBlue);
+}
+
+
+
+
 
                         //Remap new values
                         decodedim.image[x, y].GetR =(byte) Convert.ToInt32(Convert.ToString(Convert.ToInt32(NewRed, 2), 10));
@@ -185,7 +255,7 @@ namespace ConsoleProgram
             }
         }
 
-        #endregion
+       
 
     }
 }
