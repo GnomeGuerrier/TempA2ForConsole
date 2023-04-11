@@ -11,59 +11,41 @@ namespace ConsoleProgram
     /// </summary>
     class Steganography : MyImage
     {
-        //==================================================================================================================================================================================================================================================
-        // CONSTRUCTOR
-        //==================================================================================================================================================================================================================================================
-
+        
       
 
-        public MyImage im;   //Original image (used as based image for encoding, and trying to decrypt
-        public MyImage encodedim;
-        /// <summary>
-        /// basic constructor, this takes the original image, to decode it, or encode another image inside it
-        /// </summary>
-        /// <param name="originalim"></param>
+        public MyImage imageAEncoder;   
+        public MyImage encodeImage;
+        
         public Steganography(MyImage originalim)  //This is for encoding and decoding, it only acts as a setter for the base picture
         {
-            this.im = originalim;
+            this.imageAEncoder = originalim;
 
-            this.hauteur = im.hauteur;
-            this.largeur = im.largeur;
-            this.offset = im.offset;
-            this.tailleFichier = im.tailleFichier;
-            this.type = im.type;
-            this.bpc = im.bpc;
+            this.hauteur = imageAEncoder.hauteur;
+            this.largeur = imageAEncoder.largeur;
+            this.offset = imageAEncoder.offset;
+            this.tailleFichier = imageAEncoder.tailleFichier;
+            this.type = imageAEncoder.type;
+            this.bpc = imageAEncoder.bpc;
             this.myfile = originalim.myfile; ;
 
         }
 
         
-
-        //==================================================================================================================================================================================================================================================
-        // FUNCTIONS
-        //==================================================================================================================================================================================================================================================
-
-       
-
-        /// <summary>
-        /// Encode an image inside our image
-        /// </summary>
-        /// <param name="hiddenim">the image to be hidden</param>
-        /// <param name="hiddenbits">the numbers of significant bit to be used</param>
        
        
         public void Encode(MyImage hiddenim, int hiddenbits)
         {
-             encodedim = this.im;
-            for (int x = 0; x < this.im.image.GetLength(0); x++)
+             encodeImage = this.imageAEncoder;
+            for (int x = 0; x < this.imageAEncoder.image.GetLength(0); x++)
             {
-            for (int y = 0; y < this.im.image.GetLength(1); y++)
+            for (int y = 0; y < this.imageAEncoder.image.GetLength(1); y++)
             {
                 if (hiddenim.image.GetLength(0) > x && hiddenim.image.GetLength(1) > y)
                 {
-                    string RedBin = ToBin(this.im.image[x, y].GetR, this.bpc / 3);
-                    string GreenBin = ToBin(this.im.image[x, y].GetG, this.bpc / 3);
-                    string BlueBin = ToBin(this.im.image[x, y].GetB, this.bpc / 3);
+                    string RedBin = ToBin(this.imageAEncoder.image[x, y].GetR, this.bpc / 3);
+                    string GreenBin = ToBin(this.imageAEncoder.image[x, y].GetG, this.bpc / 3);
+                    string BlueBin = ToBin(this.imageAEncoder.image[x, y].GetB, this.bpc / 3);
 
                     string HiddenRedBin = ToBin(hiddenim.image[x, y].GetR, this.bpc / 3);
                     string HiddenGreenBin = ToBin(hiddenim.image[x, y].GetG, this.bpc / 3);
@@ -73,78 +55,16 @@ namespace ConsoleProgram
                     string NewGreen = GreenBin.Substring(0, this.bpc / 3 - hiddenbits) + HiddenGreenBin.Substring(this.bpc / 3 - hiddenbits);
                     string NewBlue = BlueBin.Substring(0, this.bpc / 3 - hiddenbits) + HiddenBlueBin.Substring(this.bpc / 3 - hiddenbits);
 
-                    encodedim.image[x, y].GetR = (byte)Convert.ToInt32(NewRed, 2);
-                    encodedim.image[x, y].GetG = (byte)Convert.ToInt32(NewGreen, 2);
-                    encodedim.image[x, y].GetB = (byte)Convert.ToInt32(NewBlue, 2);
+                    encodeImage.image[x, y].GetR = (byte)Convert.ToInt32(NewRed, 2);
+                    encodeImage.image[x, y].GetG = (byte)Convert.ToInt32(NewGreen, 2);
+                    encodeImage.image[x, y].GetB = (byte)Convert.ToInt32(NewBlue, 2);
                 }
             }
             }
-            //AdjustBrightnessAndContrast(encodedim,50,1.2);
-            encodedim.From_Image_To_File("TestHugoFinal");
+            //AdjustBrightnessAndContrast(encodeImage,50,1.2);
+            encodeImage.From_Image_To_File("TestHugoFinal");
         }
 
-       
-       
-       
-       /*
-        public void Encode(MyImage hiddenim, int hiddenbits)   //Change 8 to bpc/3?
-        {
-
-
-            MyImage encodedim = this.im;
-            for (int x = 0; x < this.im.image.GetLength(0); x++)
-            {
-                for (int y = 0; y < this.im.image.GetLength(1); y++)
-                {
-
-                    if (hiddenim.image.GetLength(0) > x && hiddenim.image.GetLength(1) > y) //in case hiddenim is smaller, it gets cropped
-                    {
-                        string RedBin = ToBin(this.im.image[x, y].GetR, this.bpc / 3);
-                        string GreenBin = ToBin(this.im.image[x, y].GetG, this.bpc / 3);
-                        string BlueBin = ToBin(this.im.image[x, y].GetB, this.bpc / 3);
-
-                        string HiddenRedBin = ToBin(hiddenim.image[x, y].GetR, this.bpc / 3);
-                        string HiddenGreenBin = ToBin(hiddenim.image[x, y].GetG, this.bpc / 3);
-                        string HiddenBlueBin = ToBin(hiddenim.image[x, y].GetB, this.bpc / 3);
-
-                        string NewRed = "";
-                        string NewGreen = "";
-                        string NewBlue = "";
-                        //We want to add hiddenbits number of digits of the original RedBin binary, so when digit is strictly higher than hiddenbits(-1 for index) we use the 
-                        //Hidden bit with digit-(8-hiddenbits) so for example if hiddenbits is 4, when we get to digit=4 we access the 4-(8-4)=0th bit of the hidden image
-                        for (int digit = 0; digit < this.bpc / 3; digit++)
-                        {
-                            NewRed += digit < hiddenbits - 1 ? HiddenRedBin[digit - (this.bpc / 3 - hiddenbits)] : RedBin[digit];
-                        }
-                        for (int digit = 0; digit < this.bpc / 3; digit++)
-                        {
-                            NewGreen += digit < hiddenbits - 1 ? HiddenGreenBin[digit - (this.bpc / 3 - hiddenbits)] : GreenBin[digit];
-                        }
-                        for (int digit = 0; digit < this.bpc / 3; digit++)
-                        {
-                            NewBlue += digit < hiddenbits - 1 ? HiddenBlueBin[digit - (this.bpc / 3 - hiddenbits)] : BlueBin[digit];
-                        }
-                    
-
-
-                        encodedim.image[x, y].GetR = (byte)Convert.ToInt32(Convert.ToString(Convert.ToInt32(NewRed, 2), 10));
-                        encodedim.image[x, y].GetG =(byte) Convert.ToInt32(Convert.ToString(Convert.ToInt32(NewGreen, 2), 10));
-                        encodedim.image[x, y].GetB =(byte) Convert.ToInt32(Convert.ToString(Convert.ToInt32(NewBlue, 2), 10));
-
-                    }
-                    else //If hiddenim is smaller than actual im, we don't alter the pixel
-                    {
-                        encodedim.image[x, y] = im.image[x, y];
-                    }
-
-
-                }
-            }
-            encodedim.From_Image_To_File("TestHugoFinal");
-        }*/
-            
-
-        
 
 
         public static void AdjustBrightnessAndContrast(MyImage image, double brightnessScale, double contrastScale)
@@ -181,26 +101,21 @@ namespace ConsoleProgram
             return temp;
         }
 
-
-
-        /// <summary>
-        /// A bruteforce way to decode an LSB hidden image, it tries for all bits possible to recover the hidden image from the original image
-        /// </summary>
         public void Decode()
         {
 
             for (int bits = 1; bits < this.bpc / 3; bits++)
             {
-                MyImage decodedim = this.im;  //Same properties, only the matrix is going to change
-                for (int x = 0; x < this.im.image.GetLength(0); x++)
+                MyImage decodedim = this.imageAEncoder;  //Same properties, only the matrix is going to change
+                for (int x = 0; x < this.imageAEncoder.image.GetLength(0); x++)
                 {
-                    for (int y = 0; y < this.im.image.GetLength(1); y++)
+                    for (int y = 0; y < this.imageAEncoder.image.GetLength(1); y++)
                     {
 
                         //string of binary conversion of the value of each decimal color value of the x,y pixel
-                        string RedBin = ToBin(this.im.image[x, y].GetR, this.bpc / 3);
-                        string GreenBin = ToBin(this.im.image[x, y].GetG, this.bpc / 3);
-                        string BlueBin = ToBin(this.im.image[x, y].GetB, this.bpc / 3);
+                        string RedBin = ToBin(this.imageAEncoder.image[x, y].GetR, this.bpc / 3);
+                        string GreenBin = ToBin(this.imageAEncoder.image[x, y].GetG, this.bpc / 3);
+                        string BlueBin = ToBin(this.imageAEncoder.image[x, y].GetB, this.bpc / 3);
 
                         string NewRed = "";
                         string NewGreen = "";
