@@ -32,14 +32,15 @@ namespace ConsoleProgram
             //image.Embossing(embossKernel);
            // Rotate rotate = new Rotate(78,image);
             //rotate.From_Image_To_File("Test_Rotation78");
-            Convolution convo = new Convolution(image,"Edge_enhance");
-            convo.From_Image_To_File("Emboss82852");
+            //Convolution convo = new Convolution(image,"Edge_enhance");
+            //convo.From_Image_To_File("Emboss82852");
            /* image.MandelBrot();
             MyImage imageBase = new MyImage(basicPath+"TestHugo1.bmp");
             MyImage imageCode = new MyImage(basicPath+"TestHugo2.bmp");
             Steganography stega = new Steganography(imageBase);
             stega.Encode(imageCode,4);
             stega.Decode();*/
+            image.MandelBrot();
             Console.ReadLine();
 
           
