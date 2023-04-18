@@ -70,7 +70,26 @@ namespace ConsoleProgram
 
         }
 
+        public void HuffmanString(){
+            int padding = (4 - ((this.largeur * 3) % 4)) % 4;
+            byte[] bytes = new byte[this.tailleFichier + padding * this.hauteur];
+            ArrayAddBytes(bytes, Encoding.ASCII.GetBytes(this.type), 0);
+            ArrayAddInt(bytes, this.tailleFichier + padding * this.hauteur, 2, 4);
+            ArrayAddInt(bytes, this.largeur, 18, 4);
+            ArrayAddInt(bytes, this.hauteur, 22, 4);
+            ArrayAddInt(bytes, this.offset, 10, 4);
+            ArrayAddInt(bytes, this.bpc, 28, 2);
+            ArrayAddInt(bytes, this.hres, 38, 4);
+            ArrayAddInt(bytes, this.vres, 42, 4);
 
+            ArrayAddBytes(bytes, new byte[4] { 40, 0, 0, 0 }, 14);
+            ArrayAddBytes(bytes, new byte[2] { 1, 0 }, 26);
+            ArrayAddInt(bytes, (this.tailleFichier - this.offset), 34, 4);
+            ArrayAddInt(bytes, this.hres, 34, 4);
+
+            ArrayAddPixels(bytes, this.image, this.offset, padding);
+            
+        }
 
 
         //fonction utiles
