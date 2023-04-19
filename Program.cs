@@ -9,7 +9,8 @@ using System.ComponentModel;
 using System.Media;
 using System.Diagnostics;
 using System.Collections;
-
+using MLModel1_ConsoleApp1;
+using System.IO;
 
 
 
@@ -41,7 +42,7 @@ namespace ConsoleProgram
             stega.Encode(imageCode,4);
             stega.Decode();*/
            // image.MandelBrot();
-           Console.WriteLine("Please enter the string:");
+          /* Console.WriteLine("Please enter the string:");
             string input = Console.ReadLine();
             ArbreHuffman huffmanTree = new ArbreHuffman();
 
@@ -63,7 +64,17 @@ namespace ConsoleProgram
 
             Console.WriteLine("Decoded: " + decoded);
 
-            
+            */
+            var imageBytes = File.ReadAllBytes(@"C:\Users\eliot\OneDrive\Bureau\IMG_2008.jpg");
+MLModel1.ModelInput sampleData = new MLModel1.ModelInput()
+{
+    ImageSource = imageBytes,
+};
+
+// Make a single prediction on the sample data and print results.
+var predictionResult = MLModel1.Predict(sampleData);
+Console.WriteLine($"\n\nPredicted Label value: {predictionResult.PredictedLabel} \nPredicted Label scores: [{String.Join(",", predictionResult.Score)}]\n\n");
+
             Console.ReadLine();
 
           
