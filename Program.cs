@@ -43,7 +43,7 @@ namespace ConsoleProgram
            // image.MandelBrot();
            Console.WriteLine("Please enter the string:");
             string input = Console.ReadLine();
-            HuffmanTree huffmanTree = new HuffmanTree();
+            ArbreHuffman huffmanTree = new ArbreHuffman();
 
             // Build the Huffman tree
             huffmanTree.Build(input);

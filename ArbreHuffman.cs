@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace ConsoleProgram
 {
-    public class HuffmanTree
+    public class ArbreHuffman
     {
         private List<Noeud> noeuds = new List<Noeud>();
         public Noeud Racine { get; set; }
