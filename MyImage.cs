@@ -210,11 +210,11 @@ namespace ConsoleProgram
 
         //Effect image
         //image en gris
-        /*
-        public void ImageEnGris()
+        
+        public void ImageEnGris(string FilePath)
         {
 
-            MyImage imGris = new MyImage(basicPath+this.name+".bmp");
+            MyImage imGris = new MyImage(FilePath);
             for (int i = 0; i < imGris.image.GetLength(0); i++)
             {
                 for (int j = 0; j < imGris.image.GetLength(1); j++)
@@ -228,7 +228,7 @@ namespace ConsoleProgram
             }
             imGris.From_Image_To_File(this.name + "_ImageEnGris");
         }
-        */
+        
 
         #region Agrandissement
         public void Agrandissement(double zoom)
