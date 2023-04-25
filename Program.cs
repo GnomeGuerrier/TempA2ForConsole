@@ -62,24 +62,38 @@ namespace ConsoleProgram
             // Decode
             string decoded = huffmanTree.Decode(encoded);
 
-            Console.WriteLine("Decoded: " + decoded);
+            Console.WriteLine("Decoded: s" + decoded);
 
             */
-            var imageBytes = File.ReadAllBytes(@"C:\Users\eliot\OneDrive\Bureau\IMG_2008.jpg");
-MLModel1.ModelInput sampleData = new MLModel1.ModelInput()
-{
-    ImageSource = imageBytes,
-};
 
-// Make a single prediction on the sample data and print results.
-var predictionResult = MLModel1.Predict(sampleData);
-Console.WriteLine($"\n\nPredicted Label value: {predictionResult.PredictedLabel} \nPredicted Label scores: [{String.Join(",", predictionResult.Score)}]\n\n");
 
-            Console.ReadLine();
+          #region ML
+          /*
+            var imageBytes = File.ReadAllBytes(@"C:\Users\eliot\OneDrive\Bureau\téléchargé.jpg");
+            MLModel1.ModelInput sampleData = new MLModel1.ModelInput()
+            {
+                ImageSource = imageBytes,
+            };
 
-          
+            // Make a single prediction on the sample data and print results.
+            var predictionResult = MLModel1.Predict(sampleData);
+            Console.WriteLine($"\n\nPredicted Label value: {predictionResult.PredictedLabel} \nPredicted Label scores: [{String.Join(",", predictionResult.Score)}]\n\n");
+          */
+          #endregion  
 
         
+        }
+        public void ML(string chemin){
+            var imageBytes = File.ReadAllBytes(chemin);
+            MLModel1.ModelInput sampleData = new MLModel1.ModelInput()
+            {
+                ImageSource = imageBytes,
+            };
+
+            // Make a single prediction on the sample data and print results.
+            var predictionResult = MLModel1.Predict(sampleData);
+            Console.WriteLine($"\n\nPredicted Label value: {predictionResult.PredictedLabel} \nPredicted Label scores: [{String.Join(",", predictionResult.Score)}]\n\n");
+          
         }
 
     }
