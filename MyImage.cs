@@ -242,7 +242,7 @@ namespace ConsoleProgram
         public void Agrandissement(double zoom)
         {
 
-            MyImage imAgrandissement = new MyImage(basicPath + this.name + ".bmp");
+            MyImage imAgrandissement = new MyImage(this.Path);
             if (zoom >= 1)
             {
                 Console.WriteLine("extend");
@@ -364,7 +364,7 @@ namespace ConsoleProgram
             double radians = angle * Math.PI / 180.0;
             double sin = Math.Sin(radians);
             double cos = Math.Cos(radians);
-            MyImage result = new MyImage(basicPath + this.name + ".bmp");
+            MyImage result = new MyImage(this.Path);
 
             int newL=(int) (this.largeur*Math.Abs(cos)+this.hauteur*Math.Abs(sin));
             int newH = (int)(this.hauteur * Math.Abs(cos) + this.largeur * Math.Abs(sin));
