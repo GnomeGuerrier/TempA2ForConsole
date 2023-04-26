@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 
 namespace ConsoleProgram
 {
-    class MyImage
+    public class MyImage
 
     {
         public string Path = "";
