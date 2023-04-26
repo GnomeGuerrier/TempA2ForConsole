@@ -12,7 +12,7 @@ namespace ConsoleProgram
     class MyImage
 
     {
-        string basicPath = "./bin/Debug/net7.0/images/";
+        string Path = "";
         public byte[] myfile;
         public string name;
         public string type;
@@ -27,7 +27,7 @@ namespace ConsoleProgram
         public Pixel[,] image;
         public MyImage(string path)
         {
-
+            this.Path = path;
             this.myfile = File.ReadAllBytes(path);
             this.name = path.Split('.', '/')[path.Split('.', '/').Length - 2]; //récupère le nom du fichier
             this.type = Encoding.ASCII.GetString(myfile, 0, 2);
@@ -44,10 +44,14 @@ namespace ConsoleProgram
 
         }
         public MyImage(){}
-
+        /// <summary>
+        /// Permet d'enregistrer une image, faite de la classe 
+        /// </summary>
+        /// <param name="filename">nom qui va être rajouter </param>
         public void From_Image_To_File(string filename)
         {
-            string path = basicPath + filename + ".bmp";
+
+            string path = this.Path.Substring(0, inputString.Length - 4)+"_"+filename+".bmp";
             int padding = (4 - ((this.largeur * 3) % 4)) % 4;
             byte[] bytes = new byte[this.tailleFichier + padding * this.hauteur];
             ArrayAddBytes(bytes, Encoding.ASCII.GetBytes(this.type), 0);
@@ -94,7 +98,11 @@ namespace ConsoleProgram
 
         //fonction utiles
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bytes">La matrice de byte à transformer</param>
+        /// <returns></returns>
         public Pixel[,] MatricePixel(byte[] bytes)
         {
             Pixel[,] result = new Pixel[this.hauteur, this.largeur];
@@ -219,14 +227,14 @@ namespace ConsoleProgram
             {
                 for (int j = 0; j < imGris.image.GetLength(1); j++)
                 {
-                    //To have different level of grey we do the average on each pixel
+                    //On fait la moyenne sur chaque pixel
                     int grey = imGris.image[i, j].GetR / 3 + imGris.image[i, j].GetG / 3 + imGris.image[i, j].GetB / 3;
                     imGris.image[i, j].GetR =(byte) grey;
                     imGris.image[i, j].GetG = (byte)grey;
                     imGris.image[i, j].GetB = (byte)grey;
                 }
             }
-            imGris.From_Image_To_File(this.name + "_ImageEnGris");
+            imGris.From_Image_To_File("_ImageEnGris");
         }
         
 
