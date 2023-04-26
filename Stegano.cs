@@ -16,8 +16,11 @@ namespace ConsoleProgram
 
         public MyImage imageAEncoder;   
         public MyImage encodeImage;
-        
-        public Steganography(MyImage originalim)  //This is for encoding and decoding, it only acts as a setter for the base picture
+        /// <summary>
+        /// Constructueur de image  pour la stéganographie, 
+        /// </summary>
+        /// <param name="originalim">Image originale</param>
+        public Steganography(MyImage originalim) 
         {
             this.imageAEncoder = originalim;
 
@@ -34,7 +37,12 @@ namespace ConsoleProgram
 
         
        
-       
+        /// <summary>
+        /// Encode une image dans une autre, avec comme image de base l'image elle meme
+        /// </summary>
+        /// <param name="hiddenim">l'image a cacher</param>
+        /// <param name="hiddenbits">Sur quel bits encoder l'image</param>
+                       
         public void Encode(MyImage hiddenim, int hiddenbits)
         {
              encodeImage = this.imageAEncoder;

@@ -117,6 +117,30 @@ namespace ConsoleProgram
                     return new int[,] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
             }
             return new int[,] { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
         }
 
 
