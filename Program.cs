@@ -29,8 +29,8 @@ namespace ConsoleProgram
             //MyImage image = new MyImage(basicPath + "coco.bmp");
 
 
-            //WelcomePage();
-            string FilePath = SelectFile();
+            WelcomePage();
+            /*string FilePath = SelectFile();
             MyImage imBase = new MyImage(FilePath);
 
             string FilePathl = SelectFile();
@@ -38,7 +38,7 @@ namespace ConsoleProgram
 
             Steganography stega = new Steganography(imBase);
             stega.Encode(imCa, 4);
-            stega.Decode();
+            stega.Decode();*/
 
             //image.From_Image_To_File("cocosortie");
             // image.ImageEnGris();
@@ -312,7 +312,7 @@ namespace ConsoleProgram
         static void PageFractale(string FilePath)
         {
             MyImage image = new MyImage(FilePath);
-            Console.WriteLine("Création de la franctale...");
+            Console.WriteLine("Création de la fractale...");
             image.MandelBrot(FilePath);
             MainMenu(FilePath);
         }
