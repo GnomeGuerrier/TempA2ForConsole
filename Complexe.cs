@@ -7,55 +7,48 @@ using System.Threading.Tasks;
 namespace ConsoleProgram
 {
     /// <summary>
-    /// Class to represent a complex number and handle complex computations
+    /// Class qui permet de faire des opérations sur les complexes
     /// </summary>
     class Complexe
     {
-        //==================================================================================================================================================================================================================================================
-        // CONSTRUCTOR
-        //==================================================================================================================================================================================================================================================
+        
+      
 
-        #region Constructor
-
-        //a complex number can be written with a real and imaginary part
+        //Parties imaginaires et reélles
         private double re;
         private double im;
 
 
 
-        /// <summary>
-        /// Empty constructor
-        /// </summary>
+      
         public Complexe() { }
 
 
 
         /// <summary>
-        /// Simple constructor
+        /// Constructor simple
         /// </summary>
-        /// <param name="re">real part of the number</param>
-        /// <param name="im">imaginary part of the number</param>
-        public Complexe(double re, double im)
+        /// <param name="reel">real part of the number</param>
+        /// <param name="immaginaire">imaginary part of the number</param>
+        public Complexe(double reel, double immaginaire)
         {
-            this.re = re;
-            this.im = im;
+            this.re = reel;
+            this.im = immaginaire;
         }
 
 
 
         /// <summary>
-        /// copy constructor
+        /// Permet de copier un complexe
         /// </summary>
-        /// <param name="z">complex number to copy</param>
-        public Complexe(Complexe z)
+        /// <param name="x">nombre complexe a copier</param>
+        public Complexe(Complexe x)
         {
-            this.re = z.re;
-            this.im = z.im;
+            this.re = x.re;
+            this.im = x.im;
         }
 
-        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        #region get and sets
+       
         public double Re
         {
             get { return this.re; }
@@ -69,44 +62,36 @@ namespace ConsoleProgram
                 this.im = value;
             }
         }
-        #endregion
+       
 
-        #endregion
-
-        //==================================================================================================================================================================================================================================================
-        // FUNCTIONS
-        //==================================================================================================================================================================================================================================================
-
-        #region Functions
+       
 
         /// <summary>
-        /// Multiply 2 complex number
+        /// Multiplie deux complexes entre eux
         /// </summary>
-        /// <param name="z1">the first complex number</param>
-        /// <param name="z2">the second complex number</param>
-        /// <returns>the result of the multiplication</returns>
-        public static Complexe ComplexMult(Complexe z1, Complexe z2)
+        /// <param name="x1">le premier complexe</param>
+        /// <param name="x2">le deuxieme complex</param>
+        public static Complexe ComplexMult(Complexe x1, Complexe x2)
         {
-            return new Complexe(z1.Re * z2.Re - z1.Im * z2.Im, z1.Re * z2.Im + z2.Re * z1.Im);
+            return new Complexe(x1.Re * x2.Re - x1.Im * x2.Im, x1.Re * x2.Im + x2.Re * x1.Im);
         }
 
 
 
         /// <summary>
-        /// Add 2 complex number
+        /// Additionne 2 complexe
         /// </summary>
-        /// <param name="z1">the first complex number</param>
-        /// <param name="z2">the second complex number</param>
-        /// <returns>the result of the addition</returns>
-        public static Complexe ComplexAdd(Complexe z1, Complexe z2)
+        /// <param name="x1">le premier cmplexe</param>
+        /// <param name="x2">le deuxieme complexe</param>
+        public static Complexe ComplexAdd(Complexe x1, Complexe x2)
         {
-            return new Complexe(z1.Re + z2.Re, z1.Im + z2.Im);
+            return new Complexe(x1.Re + x2.Re, x1.Im + x2.Im);
         }
 
 
 
         /// <summary>
-        /// Computes the module of a complex number, its distance from (0,0) in the complex plane
+        /// Calcule le module d'un complexe
         /// </summary>
         /// <returns>the module of the complex number</returns>
         public double Module()
@@ -117,15 +102,14 @@ namespace ConsoleProgram
 
 
         /// <summary>
-        /// Tostring method for a complex number
+        /// Affiche un complexe
         /// </summary>
-        /// <returns>returns the complex number like: (a+bi)</returns>
         public string toString()
         {
             return "(" + this.Re.ToString() + "," + this.Im.ToString() + "i)";
         }
 
-        #endregion
+       
 
     }
 }

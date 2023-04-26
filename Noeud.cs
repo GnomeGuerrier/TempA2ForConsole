@@ -12,14 +12,14 @@ namespace ConsoleProgram
         public Noeud Droite { get; set; }
         public Noeud Gauche { get; set; }
 
-        public List<bool> Traverse(char symbol, List<bool> data)
+        public List<bool> Traverse(char symbol, List<bool> donne)
         {
-            // Leaf
+            
             if (Droite == null && Gauche == null)
             {
                 if (symbol.Equals(this.Symbol))
                 {
-                    return data;
+                    return donne;
                 }
                 else
                 {
@@ -34,7 +34,7 @@ namespace ConsoleProgram
                 if (Gauche != null)
                 {
                     List<bool> cheminGauche = new List<bool>();
-                    cheminGauche.AddRange(data);
+                    cheminGauche.AddRange(donne);
                     cheminGauche.Add(false);
 
                     gauche = Gauche.Traverse(symbol, cheminGauche);
@@ -43,7 +43,7 @@ namespace ConsoleProgram
                 if (Droite != null)
                 {
                     List<bool> cheminDroite = new List<bool>();
-                    cheminDroite.AddRange(data);
+                    cheminDroite.AddRange(donne);
                     cheminDroite.Add(true);
                     droite = Droite.Traverse(symbol, cheminDroite);
                 }

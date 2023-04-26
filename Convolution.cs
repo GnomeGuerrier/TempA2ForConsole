@@ -7,36 +7,24 @@ using System.Threading.Tasks;
 namespace ConsoleProgram
 {
     /// <summary>
-    /// Convolution class, daughter of the MyImage class, used to add convolution filters to an MyImage
+    /// Class convolution, qui hérite de MyImage
     /// </summary>
     class Convolution : MyImage
     {
 
-        //==================================================================================================================================================================================================================================================
-        // CONSTRUCTOR
-        //==================================================================================================================================================================================================================================================
 
-        #region Constructor
-
-        /// <summary>
-        /// Characteristics of a convolution filter
-        /// </summary>
-        int[,] filter; //filter matrix
-        int factor;  //Used to multiply the result
-        int bias; //Used to add brightness, to be added after the factor multiplication
+        
+        int[,] filtre;
+        int facteur; 
+        int bias; 
 
 
 
-        /// <summary>
-        /// simple constructor
-        /// </summary>
-        /// <param name="im">MyImage to apply the convolution filter to</param>
-        /// <param name="filter">the filter that need to be applied, as a string</param>
-        public Convolution(MyImage im, string filter)  //Add type of convolution, and search in the according db? db inside this function?
+        
+        public Convolution(MyImage im, string filtre) 
         {
-            this.filter = GetFilter(filter);  //get the matrix filter
-            this.factor = GetFactor(filter);  //get the multiplicative factor
-               //Get the bias, not use for the moment but often use in some filters, to modify overall visibility by lighting up or darkening the MyImage
+            this.filtre = GetFilter(filtre);  
+            this.facteur = GetFactor(filtre); 
             this.hauteur = im.hauteur;
             this.largeur = im.largeur;
             this.offset = im.offset;
@@ -47,16 +35,8 @@ namespace ConsoleProgram
             this.ConstructMat(im);
         }
 
-        #endregion
+       
 
-        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        #region Constructor helper
-
-        /// <summary>
-        /// Construct the MyImage pixel matrix with the addition of the convolution filter
-        /// </summary>
-        /// <param name="im">the MyImage on which we apply the filter</param>
         public void ConstructMat(MyImage im)
         {
 
@@ -68,18 +48,16 @@ namespace ConsoleProgram
                     double blue = 0;
                     double green = 0;
 
-                    for (int filterx = 0; filterx < filter.GetLength(0); filterx++)  //If bug, change filterx/y and getlengths
+                    for (int filtrex = 0; filtrex < filtre.GetLength(0); filtrex++) 
                     {
-                        for (int filtery = 0; filtery < filter.GetLength(1); filtery++)
+                        for (int filtrey = 0; filtrey < filtre.GetLength(1); filtrey++)
                         {
-                            int i = (x - filter.GetLength(0) / 2 + filterx + im.hauteur) % im.hauteur;   //Minus the half length of the filter matrix
-                            int j = (y - filter.GetLength(1) / 2 + filtery + im.largeur) % im.largeur;
-                            double filtervalue = filter[filterx, filtery];
-                            //Console.WriteLine("im.largeur=" + im.largeur + "/" + im.Matrice.GetLength(1) + " im.Heigh" + im.hauteur + "/" + im.Matrice.GetLength(0));
-                            //Console.WriteLine("i=" + i + " j=" + j);
-                            red += im.image[i, j].GetR * filtervalue / this.factor;
-                            green += im.image[i, j].GetG * filtervalue / this.factor;
-                            blue += im.image[i, j].GetB * filtervalue / this.factor;
+                            int i = (x - filtre.GetLength(0) / 2 + filtrex + im.hauteur) % im.hauteur;  
+                            int j = (y - filtre.GetLength(1) / 2 + filtrey + im.largeur) % im.largeur;
+                            double filtrevalue = filtre[filtrex, filtrey];
+                            red += im.image[i, j].GetR * filtrevalue / this.facteur;
+                            green += im.image[i, j].GetG * filtrevalue / this.facteur;
+                            blue += im.image[i, j].GetB * filtrevalue / this.facteur;
 
                         }
                     }
@@ -95,13 +73,12 @@ namespace ConsoleProgram
 
 
         /// <summary>
-        /// databases of all filters
+        /// Listes de tout les filtres
         /// </summary>
-        /// <param name="filtername">name of the filter</param>
-        /// <returns>returns the filter string into its corresponding matrix</returns>
-        static int[,] GetFilter(string filtername)
+        /// <param name="filtrename">nom des filtres</param>
+        static int[,] GetFilter(string filtrename)
         {
-            switch (filtername)
+            switch (filtrename)
             {
                 case "Edge_detect":
                     return new int[,] { { 0, 1, 0 }, { 1, -4, 1 }, { 0, 1, 0 } };
@@ -119,40 +96,18 @@ namespace ConsoleProgram
             return new int[,] { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
         }
 
 
 
         /// <summary>
-        /// Returns the factor (if any) required by the matrix
+        /// 
         /// </summary>
-        /// <param name="filtername">string of the current filer</param>
-        /// <returns>the factor as an int</returns>
-        static int GetFactor(string filtername)
+        /// <param name="filtrename">string of the current filer</param>
+        /// <returns>the facteur as an int</returns>
+        static int GetFactor(string filtrename)
         {
-            switch (filtername)
+            switch (filtrename)
             {
                 case "BoxBlur":
                     return 9;
@@ -165,12 +120,8 @@ namespace ConsoleProgram
 
 
 
-        /// <summary>
-        /// Return the bias based on the filter, not used for the filters we have in our database in the moment
-        /// </summary>
-        /// <param name="filtername">string of the current filer</param>
-        /// <returns>the bias number as an int</returns>
+   
        
-        #endregion
+        
     }
 }
