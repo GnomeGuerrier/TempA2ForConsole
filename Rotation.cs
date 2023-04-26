@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +35,7 @@ namespace ConsoleProgram
             this.GetDimensions(angle, original);
             this.image = new Pixel[this.hauteur, this.largeur];
             this.GetMatrice(angle, original);
+            this.Path = original.Path;
 
         
         }

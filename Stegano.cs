@@ -27,7 +27,8 @@ namespace ConsoleProgram
             this.tailleFichier = imageAEncoder.tailleFichier;
             this.type = imageAEncoder.type;
             this.bpc = imageAEncoder.bpc;
-            this.myfile = originalim.myfile; ;
+            this.myfile = originalim.myfile;
+            this.Path = originalim.Path;
 
         }
 
@@ -106,7 +107,8 @@ namespace ConsoleProgram
 
             for (int bits = 1; bits < this.bpc / 3; bits++)
             {
-                MyImage decodedim = this.imageAEncoder;  //Same properties, only the matrix is going to change
+                MyImage decodedim = this.imageAEncoder;
+                decodedim.Path = imageAEncoder.Path;                                                    //Same properties, only the matrix is going to change
                 for (int x = 0; x < this.imageAEncoder.image.GetLength(0); x++)
                 {
                     for (int y = 0; y < this.imageAEncoder.image.GetLength(1); y++)
@@ -146,9 +148,9 @@ namespace ConsoleProgram
 
                        if (RedBin != "00000000" || GreenBin != "00000000" || BlueBin != "00000000")
 {
-    Console.WriteLine("Pixel (" + x + "," + y + ")");
+    /*Console.WriteLine("Pixel (" + x + "," + y + ")");
     Console.WriteLine("Original R: " + RedBin + ", G: " + GreenBin + ", B: " + BlueBin);
-    Console.WriteLine("Encoded R: " + NewRed + ", G: " + NewGreen + ", B: " + NewBlue);
+    Console.WriteLine("Encoded R: " + NewRed + ", G: " + NewGreen + ", B: " + NewBlue);*/
 }
 
 

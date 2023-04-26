@@ -36,7 +36,7 @@ namespace ConsoleProgram
         {
             this.filter = GetFilter(filter);  //get the matrix filter
             this.factor = GetFactor(filter);  //get the multiplicative factor
-            this.bias = GetBias(filter);    //Get the bias, not use for the moment but often use in some filters, to modify overall visibility by lighting up or darkening the MyImage
+               //Get the bias, not use for the moment but often use in some filters, to modify overall visibility by lighting up or darkening the MyImage
             this.hauteur = im.hauteur;
             this.largeur = im.largeur;
             this.offset = im.offset;
@@ -146,15 +146,7 @@ namespace ConsoleProgram
         /// </summary>
         /// <param name="filtername">string of the current filer</param>
         /// <returns>the bias number as an int</returns>
-        static int GetBias(string filtername)
-        {
-            switch (filtername)
-            {
-                default:
-                    return 0;
-            }
-        }
-
+       
         #endregion
     }
 }
